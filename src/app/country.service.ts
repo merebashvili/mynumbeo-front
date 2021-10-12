@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class CountryService {
-  private countriesUrl = 'http://localhost:3000/countries';
+  private countriesUrl = '/countries';
 
   constructor(private http: HttpClient) {}
 
