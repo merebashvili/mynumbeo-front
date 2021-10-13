@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Country, ResponseCountry } from './country';
+import { Country, ResponseCountry } from '../country';
 import { HttpClient } from '@angular/common/http';
 import { tap, map } from 'rxjs/operators';
-import { Product } from './product';
+import { Product } from '../product';
 
 @Injectable({
   providedIn: 'root',
