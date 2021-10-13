@@ -1,8 +1,9 @@
 <ul>
   <li *ngFor="let country of countries$ | async">
     <a>
-      <span>{{ country.name }}</span>
-      {{ country.products.length }} products
+      <span>{{ country.name | titlecase }}</span>
+      {{ country.quantity_of_products }} Products
+      {{ country.totalExpenseInGlobalCurrency | currency: "USD" }}
     </a>
   </li>
 </ul>
