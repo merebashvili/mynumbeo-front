@@ -2,7 +2,10 @@
   <h1>{{ country.name | titlecase }}</h1>
 
   <ul>
-    <li *ngFor="let product of country.products">
+    <li
+      *ngFor="let product of country.products"
+      routerLink="/product/{{ product._id }}"
+    >
       <span>{{ product.product | titlecase }}</span>
       {{ product.price_in_local }}
       {{ product.price_in_usd | currency: "USD" }}
