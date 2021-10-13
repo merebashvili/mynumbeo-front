@@ -27,6 +27,10 @@ export class CountryService {
     );
   }
 
+  getCountryById(id: string): Observable<ResponseCountry> {
+    return this.http.get<ResponseCountry>(`${this.countriesUrl}/${id}`);
+  }
+
   calculateTotalExpenses(products: Product[]): number {
     const initialValue = 0;
 
