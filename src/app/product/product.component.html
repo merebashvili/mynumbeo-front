@@ -1,0 +1,18 @@
+<div *ngIf="product">
+  <input type="text" [(ngModel)]="product.product" placeholder="name" />
+  <input
+    type="number"
+    [(ngModel)]="product.price_in_local"
+    placeholder="localPrice"
+  />
+  <input
+    type="number"
+    [(ngModel)]="product.price_in_usd"
+    placeholder="usdPrice"
+  />
+  <input
+    type="number"
+    [(ngModel)]="product.quantity_for_month"
+    placeholder="quantity"
+  />
+</div>
