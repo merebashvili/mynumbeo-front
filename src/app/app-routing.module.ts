@@ -4,10 +4,10 @@ import { CountriesListComponent } from './countries-list/countries-list.componen
 import { CountryComponent } from './country/country.component';
 
 const routes: Routes = [
-  { path: 'countries-list', component: CountriesListComponent },
+  { path: 'country-list', component: CountriesListComponent },
   { path: 'country/:id', component: CountryComponent },
-  { path: '', redirectTo: 'countries-list', pathMatch: 'full' },
-  { path: '**', redirectTo: 'countries-list', pathMatch: 'full' },
+  { path: '', redirectTo: 'country-list', pathMatch: 'full' },
+  { path: '**', redirectTo: 'country-list', pathMatch: 'full' },
 ];
 
 @NgModule({
