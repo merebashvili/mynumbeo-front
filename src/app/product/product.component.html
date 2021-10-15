@@ -1,18 +1,13 @@
 <div *ngIf="product">
-  <input type="text" [(ngModel)]="product.product" placeholder="name" />
-  <input
-    type="number"
-    [(ngModel)]="product.price_in_local"
-    placeholder="localPrice"
-  />
-  <input
-    type="number"
-    [(ngModel)]="product.price_in_usd"
-    placeholder="usdPrice"
-  />
-  <input
-    type="number"
-    [(ngModel)]="product.quantity_for_month"
-    placeholder="quantity"
-  />
+  <form [formGroup]="productForm" (ngSubmit)="onProductSubmit()">
+    <input type="text" formControlName="product" />
+
+    <input type="number" formControlName="price_in_local" />
+
+    <input type="number" formControlName="price_in_usd" />
+
+    <input type="number" formControlName="quantity_for_month" />
+
+    <button type="submit">Save</button>
+  </form>
 </div>
