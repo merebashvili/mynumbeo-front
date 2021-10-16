@@ -1,5 +1,12 @@
 <div *ngIf="country">
-  <h1>{{ country.name | titlecase }}</h1>
+  <input
+    type="text"
+    #editBox
+    id="edit-box"
+    [value]="country.name | titlecase"
+    (input)="editCountry(editBox.value)"
+    class="countryInput countryInput--transparent"
+  />
 
   <ul>
     <li

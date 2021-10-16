@@ -58,4 +58,8 @@ export class CountryService {
     };
     return transformedCountryData;
   }
+
+  updateCountry(countryName: Object, id: string): Observable<Product> {
+    return this.http.patch<Product>(`${this.countriesUrl}/${id}`, countryName);
+  }
 }

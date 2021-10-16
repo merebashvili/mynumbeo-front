@@ -1,0 +1,11 @@
+.countryInput {
+  font-size: 2rem;
+
+  &--transparent {
+    border: transparent;
+  }
+
+  &:hover {
+    border: 1px solid grey;
+  }
+}
