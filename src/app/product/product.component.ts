@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../product';
 import { ProductService } from '../services/product.service';
@@ -36,10 +36,22 @@ export class ProductComponent implements OnInit {
 
   initializeForm(): void {
     this.productForm = this.fb.group({
-      product: [this.product.product],
-      price_in_local: [this.product.price_in_local],
-      price_in_usd: [this.product.price_in_usd],
-      quantity_for_month: [this.product.quantity_for_month],
+      product: [
+        this.product.product,
+        [Validators.required, Validators.minLength(2)],
+      ],
+      price_in_local: [
+        this.product.price_in_local,
+        [Validators.required, Validators.min(0.0001)],
+      ],
+      price_in_usd: [
+        this.product.price_in_usd,
+        [Validators.required, Validators.min(0.0001)],
+      ],
+      quantity_for_month: [
+        this.product.quantity_for_month,
+        [Validators.required, Validators.min(1)],
+      ],
     });
   }
 

@@ -8,6 +8,6 @@
 
     <input type="number" formControlName="quantity_for_month" />
 
-    <button type="submit">Save</button>
+    <button type="submit" [disabled]="!productForm.valid">Save</button>
   </form>
 </div>
