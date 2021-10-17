@@ -1,9 +1,9 @@
 <ul>
   <li *ngFor="let country of countries$ | async">
-    <a routerLink="/country/{{ country._id }}">
+    <div routerLink="/country/{{ country._id }}">
       <span>{{ country.name | titlecase }}</span>
       {{ country.quantity_of_products }} Products
       {{ country.totalExpenseInGlobalCurrency | currency: "USD" }}
-    </a>
+    </div>
   </li>
 </ul>
