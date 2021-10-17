@@ -1,21 +1,19 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../product';
 import { ProductService } from '../services/product.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })
-export class ProductComponent implements OnInit, OnDestroy {
+export class ProductComponent implements OnInit {
   product!: Product;
   productForm!: FormGroup;
   paramsId!: string;
-  private subcriptions!: Array<Subscription>;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,19 +27,11 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.getProduct(this.paramsId);
   }
 
-  ngOnDestroy(): void {
-    this.subcriptions.forEach((sub) => sub.unsubscribe());
-  }
-
   getProduct(id: string): void {
-    const getProductSub = this.productService
-      .getProduct(id)
-      .subscribe((product) => {
-        this.product = product;
-        this.initializeForm();
-      });
-
-    this.subcriptions.push(getProductSub);
+    this.productService.getProduct(id).subscribe((product) => {
+      this.product = product;
+      this.initializeForm();
+    });
   }
 
   initializeForm(): void {
@@ -68,11 +58,9 @@ export class ProductComponent implements OnInit, OnDestroy {
   onProductSubmit(): void {
     const product = this.productForm.getRawValue();
     if (product) {
-      const productUpdatingSub = this.productService
+      this.productService
         .updateProduct(product, this.paramsId)
         .subscribe(() => this.goBack());
-
-      this.subcriptions.push(productUpdatingSub);
     }
   }
 
