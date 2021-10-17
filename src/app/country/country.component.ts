@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CountryService } from '../services/country.service';
 import { ResponseCountry } from '../country';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -13,6 +13,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 export class CountryComponent implements OnInit {
   country!: ResponseCountry;
   private inputCountry = new Subject<string>();
+  private subscriptions: Array<Subscription> = [];
 
   constructor(
     private countryService: CountryService,
@@ -25,10 +26,18 @@ export class CountryComponent implements OnInit {
     this.setCountryNameEdit(id);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   getCountry(id: string): void {
-    this.countryService.getCountryById(id).subscribe((country) => {
-      this.country = country;
-    });
+    const getCountrySub = this.countryService
+      .getCountryById(id)
+      .subscribe((country) => {
+        this.country = country;
+      });
+
+    this.subscriptions.push(getCountrySub);
   }
 
   editCountry(name: string): void {
@@ -40,7 +49,7 @@ export class CountryComponent implements OnInit {
   }
 
   setCountryNameEdit(countryId: string): void {
-    this.inputCountry
+    const countryUpdatingSub = this.inputCountry
       .pipe(
         debounceTime(1000),
         distinctUntilChanged(),
@@ -49,5 +58,7 @@ export class CountryComponent implements OnInit {
         )
       )
       .subscribe();
+
+    this.subscriptions.push(countryUpdatingSub);
   }
 }

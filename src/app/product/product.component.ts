@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../services/product.service';
 
@@ -14,6 +15,7 @@ export class ProductComponent implements OnInit {
   product!: Product;
   productForm!: FormGroup;
   paramsId!: string;
+  private subscriptions: Array<Subscription> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -27,11 +29,19 @@ export class ProductComponent implements OnInit {
     this.getProduct(this.paramsId);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   getProduct(id: string): void {
-    this.productService.getProduct(id).subscribe((product) => {
-      this.product = product;
-      this.initializeForm();
-    });
+    const getProductSub = this.productService
+      .getProduct(id)
+      .subscribe((product) => {
+        this.product = product;
+        this.initializeForm();
+      });
+
+    this.subscriptions.push(getProductSub);
   }
 
   initializeForm(): void {
@@ -58,9 +68,11 @@ export class ProductComponent implements OnInit {
   onProductSubmit(): void {
     const product = this.productForm.getRawValue();
     if (product) {
-      this.productService
+      const productUpdatingSub = this.productService
         .updateProduct(product, this.paramsId)
         .subscribe(() => this.goBack());
+
+      this.subscriptions.push(productUpdatingSub);
     }
   }
 
