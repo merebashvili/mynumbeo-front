@@ -62,4 +62,8 @@ export class CountryService {
   updateCountry(countryName: Object, id: string): Observable<Product> {
     return this.http.patch<Product>(`${this.countriesUrl}/${id}`, countryName);
   }
+
+  deleteCountry(id: string): Observable<ResponseCountry> {
+    return this.http.delete<ResponseCountry>(`${this.countriesUrl}/${id}`);
+  }
 }

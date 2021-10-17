@@ -4,6 +4,7 @@ import { CountryService } from '../services/country.service';
 import { ResponseCountry } from '../country';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-country',
@@ -17,7 +18,8 @@ export class CountryComponent implements OnInit {
 
   constructor(
     private countryService: CountryService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +62,17 @@ export class CountryComponent implements OnInit {
       .subscribe();
 
     this.subscriptions.push(countryUpdatingSub);
+  }
+
+  public deleteCountry(): void {
+    const countryDeletingSub = this.countryService
+      .deleteCountry(this.country._id)
+      .subscribe(() => this.goBack());
+
+    this.subscriptions.push(countryDeletingSub);
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 }
