@@ -72,7 +72,7 @@ export class CountryComponent implements OnInit {
     this.subscriptions.push(countryDeletingSub);
   }
 
-  public goBack(): void {
+  private goBack(): void {
     this.location.back();
   }
 }

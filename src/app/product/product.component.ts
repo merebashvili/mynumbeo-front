@@ -76,7 +76,15 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  goBack(): void {
+  public deleteProduct(): void {
+    const productDeletingSub = this.productService
+      .deleteProduct(this.product._id)
+      .subscribe(() => this.goBack());
+
+    this.subscriptions.push(productDeletingSub);
+  }
+
+  private goBack(): void {
     this.location.back();
   }
 }
