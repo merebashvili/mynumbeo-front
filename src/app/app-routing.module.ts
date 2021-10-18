@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'country-list', component: CountriesListComponent },
   { path: 'country/:id', component: CountryComponent },
   { path: 'product/:id', component: ProductComponent },
+  { path: 'product', component: ProductComponent },
   { path: '', redirectTo: 'country-list', pathMatch: 'full' },
   { path: '**', redirectTo: 'country-list', pathMatch: 'full' },
 ];

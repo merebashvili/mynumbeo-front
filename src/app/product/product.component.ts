@@ -12,10 +12,11 @@ import { ProductService } from '../services/product.service';
   styleUrls: ['./product.component.scss'],
 })
 export class ProductComponent implements OnInit {
-  product!: Product;
+  product!: any;
   productForm!: FormGroup;
   paramsId!: string;
   private subscriptions: Array<Subscription> = [];
+  public productAddComponent = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,11 +27,17 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.paramsId = this.route.snapshot.params.id;
-    this.getProduct(this.paramsId);
+    this.initComponent(this.paramsId);
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  private initComponent(paramsId: string): void {
+    this.paramsId
+      ? this.getProduct(this.paramsId)
+      : this.initProductAddComponent();
   }
 
   getProduct(id: string): void {
@@ -47,19 +54,19 @@ export class ProductComponent implements OnInit {
   initializeForm(): void {
     this.productForm = this.fb.group({
       product: [
-        this.product.product,
+        this.getFormValue('product'),
         [Validators.required, Validators.minLength(2)],
       ],
       price_in_local: [
-        this.product.price_in_local,
+        this.getFormValue('price_in_local'),
         [Validators.required, Validators.min(0.0001)],
       ],
       price_in_usd: [
-        this.product.price_in_usd,
+        this.getFormValue('price_in_usd'),
         [Validators.required, Validators.min(0.0001)],
       ],
       quantity_for_month: [
-        this.product.quantity_for_month,
+        this.getFormValue('quantity_for_month'),
         [Validators.required, Validators.min(1)],
       ],
     });
@@ -68,11 +75,9 @@ export class ProductComponent implements OnInit {
   onProductSubmit(): void {
     const product = this.productForm.getRawValue();
     if (product) {
-      const productUpdatingSub = this.productService
-        .updateProduct(product, this.paramsId)
-        .subscribe(() => this.goBack());
-
-      this.subscriptions.push(productUpdatingSub);
+      this.productAddComponent
+        ? this.addProduct(product)
+        : this.updateProduct(product);
     }
   }
 
@@ -87,4 +92,23 @@ export class ProductComponent implements OnInit {
   private goBack(): void {
     this.location.back();
   }
+
+  private getFormValue(value: string): string | number {
+    return this.productAddComponent ? '' : this.product[value];
+  }
+
+  private initProductAddComponent(): void {
+    this.productAddComponent = true;
+    this.initializeForm();
+  }
+
+  private updateProduct(product: any): void {
+    const productUpdatingSub = this.productService
+      .updateProduct(product, this.paramsId)
+      .subscribe(() => this.goBack());
+
+    this.subscriptions.push(productUpdatingSub);
+  }
+
+  private addProduct(product: any): void {}
 }
