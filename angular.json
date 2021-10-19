@@ -73,7 +73,8 @@
               "browserTarget": "mynumbeo-front:build:production"
             },
             "development": {
-              "browserTarget": "mynumbeo-front:build:development"
+              "browserTarget": "mynumbeo-front:build:development",
+              "proxyConfig": "src/proxy.conf.js"
             }
           },
           "defaultConfiguration": "development"
