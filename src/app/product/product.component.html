@@ -1,4 +1,4 @@
-<div *ngIf="product || productAddComponent">
+<div *ngIf="product || isProductAddComponent">
   <form [formGroup]="productForm" (ngSubmit)="onProductSubmit()">
     <input type="text" formControlName="product" />
 
@@ -10,5 +10,7 @@
 
     <button type="submit" [disabled]="!productForm.valid">Save</button>
   </form>
-  <button *ngIf="!productAddComponent" (click)="deleteProduct()">Delete</button>
+  <button *ngIf="!isProductAddComponent" (click)="deleteProduct()">
+    Delete
+  </button>
 </div>

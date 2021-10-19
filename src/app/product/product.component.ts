@@ -16,7 +16,7 @@ export class ProductComponent implements OnInit {
   productForm!: FormGroup;
   paramsId!: string;
   private subscriptions: Array<Subscription> = [];
-  public productAddComponent = false;
+  public isProductAddComponent = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -75,7 +75,7 @@ export class ProductComponent implements OnInit {
   onProductSubmit(): void {
     const product = this.productForm.getRawValue();
     if (product) {
-      this.productAddComponent
+      this.isProductAddComponent
         ? this.addProduct(product)
         : this.updateProduct(product);
     }
@@ -94,11 +94,11 @@ export class ProductComponent implements OnInit {
   }
 
   private getFormValue(value: string): string | number {
-    return this.productAddComponent ? '' : this.product[value];
+    return this.isProductAddComponent ? '' : this.product[value];
   }
 
   private initProductAddComponent(): void {
-    this.productAddComponent = true;
+    this.isProductAddComponent = true;
     this.initializeForm();
   }
 
