@@ -1,8 +1,30 @@
-<label for="email">Email</label>
-<input type="email" />
+<form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+  <div *ngIf="!isLoginMode">
+    <label for="name">Name</label>
+    <input type="text" ngModel name="name" minlength="2" required pattern="" />
+  </div>
 
-<label for="password">Password</label>
-<input type="password" />
+  <div>
+    <label for="email">Email</label>
+    <input type="email" ngModel name="email" required email />
+  </div>
 
-<button>Sign Up</button>
-<button>Switch to Login</button>
+  <div>
+    <label for="password">Password</label>
+    <input
+      type="password"
+      ngModel
+      name="password"
+      required
+      minlength="7"
+      [pattern]="passwordRegex"
+    />
+  </div>
+
+  <button type="submit" [disabled]="!authForm.valid">
+    {{ isLoginMode ? "Log In" : "Sign Up" }}
+  </button>
+  <button type="button" (click)="onSwitchMode()">
+    Switch to {{ isLoginMode ? "Signup" : "Login" }}
+  </button>
+</form>
