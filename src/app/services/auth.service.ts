@@ -8,9 +8,14 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private signUpUrl = '/users';
+  private loginUrl = '/users/login';
   constructor(private http: HttpClient) {}
 
   signup(newUser: RawUser): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(this.signUpUrl, newUser);
+  }
+
+  login(user: RawUser): Observable<AuthResponseData> {
+    return this.http.post<AuthResponseData>(this.loginUrl, user);
   }
 }
