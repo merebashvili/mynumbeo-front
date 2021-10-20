@@ -10,8 +10,6 @@ import { AuthResponseData, RawUser } from '../user';
 })
 export class AuthComponent implements OnInit {
   public isLoginMode = true;
-  //Must contain at least one English letter (uppercase or lowercase) and at least one digit
-  public passwordRegex = '^(?=.*?[a-zA-Z])(?=.*?[0-9]).*$';
 
   constructor(private authService: AuthService) {}
 
@@ -55,5 +53,10 @@ export class AuthComponent implements OnInit {
     this.authService
       .login(user)
       .subscribe((responseData: AuthResponseData) => console.log(responseData));
+  }
+
+  public getPasswordRegex(): string {
+    //Must contain at least one English letter (uppercase or lowercase) and at least one digit
+    return this.isLoginMode ? '' : '^(?=.*?[a-zA-Z])(?=.*?[0-9]).*$';
   }
 }
