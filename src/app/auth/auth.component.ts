@@ -1,19 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { AuthResponseData, RawUser } from '../user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   public isLoginMode = true;
+  private subscriptions: Array<Subscription> = [];
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 
   public onSwitchMode(): void {
     this.isLoginMode = !this.isLoginMode;
@@ -50,9 +56,8 @@ export class AuthComponent implements OnInit {
   }
 
   private logInUser(user: RawUser) {
-    this.authService
-      .login(user)
-      .subscribe((responseData: AuthResponseData) => console.log(responseData));
+    const loginSubscription = this.authService.login(user).subscribe();
+    this.subscriptions.push(loginSubscription);
   }
 
   public getPasswordRegex(): string {
