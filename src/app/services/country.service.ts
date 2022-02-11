@@ -15,7 +15,7 @@ export class CountryService {
 
   getCountries(): Observable<Country[]> {
     return this.http.get<ResponseCountry[]>(this.countriesUrl).pipe(
-      // maybe I should do this transformation to the back end and
+      // maybe I should do this transformation on the back end and
       // deliver ready data
 
       map((countries: ResponseCountry[]) =>
