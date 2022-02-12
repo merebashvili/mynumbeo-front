@@ -32,6 +32,27 @@ export class AuthService {
     );
   }
 
+  autoLogin() {
+    const unparsedUserData = localStorage.getItem('userData');
+    const parsedUserData = unparsedUserData
+      ? JSON.parse(unparsedUserData)
+      : null;
+    if (!parsedUserData) {
+      return;
+    }
+
+    const newUser = new User(
+      parsedUserData.name,
+      parsedUserData.email,
+      parsedUserData._id,
+      parsedUserData._token
+    );
+
+    if (newUser.token) {
+      this.user.next(newUser);
+    }
+  }
+
   private handleAuthentication(resData: AuthResponseData): void {
     const resUserData = resData.user;
     const user = new User(
@@ -41,6 +62,7 @@ export class AuthService {
       resData.token
     );
     this.user.next(user);
+    localStorage.setItem('userData', JSON.stringify(user));
     this.router.navigate(['/countries-list']);
   }
 }
