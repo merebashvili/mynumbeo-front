@@ -1,6 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Product } from '../product';
@@ -18,6 +23,7 @@ export class ProductComponent implements OnInit {
   paramsId!: string;
   private subscriptions = new SubscriptionsContainer();
   public isProductAddComponent = false;
+  private country = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +75,16 @@ export class ProductComponent implements OnInit {
         [Validators.required, Validators.min(1)],
       ],
     });
+
+    if (this.isProductAddComponent) {
+      this.productForm.addControl(
+        'country',
+        new FormControl(this.country, [
+          Validators.required,
+          Validators.minLength(2),
+        ])
+      );
+    }
   }
 
   onProductSubmit(): void {
@@ -96,6 +112,7 @@ export class ProductComponent implements OnInit {
 
   private initProductAddComponent(): void {
     this.isProductAddComponent = true;
+    this.setCountryName();
     this.initializeForm();
   }
 
@@ -105,5 +122,14 @@ export class ProductComponent implements OnInit {
       .subscribe(() => this.goBack());
   }
 
-  private addProduct(product: any): void {}
+  private addProduct(product: any): void {
+    this.subscriptions.add = this.productService
+      .addProduct(product)
+      .subscribe(() => this.goBack());
+  }
+
+  private setCountryName(): void {
+    const paramCountry = this.route.snapshot.params.country;
+    this.country = paramCountry ? paramCountry : '';
+  }
 }

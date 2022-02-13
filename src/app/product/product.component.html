@@ -8,6 +8,8 @@
 
     <input type="number" formControlName="quantity_for_month" />
 
+    <input *ngIf="isProductAddComponent" type="text" formControlName="country" />
+
     <button type="submit" [disabled]="!productForm.valid">Save</button>
   </form>
   <button *ngIf="!isProductAddComponent" (click)="deleteProduct()">

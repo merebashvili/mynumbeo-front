@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CountryService } from '../services/country.service';
-import { ResponseCountry } from '../country';
+import { Country, ResponseCountry } from '../country';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Location } from '@angular/common';
@@ -58,7 +58,11 @@ export class CountryComponent implements OnInit {
           this.countryService.updateCountry({ name }, countryId)
         )
       )
-      .subscribe();
+      .subscribe((res: Country) => {
+        if (res && res.name) {
+          this.country.name = res.name;
+        }
+      });
   }
 
   public deleteCountry(): void {

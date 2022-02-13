@@ -21,4 +21,5 @@
   </ul>
 
   <button (click)="deleteCountry()">Delete</button>
+  <button [routerLink]="['/product', {country: country.name}]">Add</button>
 </div>

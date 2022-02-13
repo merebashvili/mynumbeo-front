@@ -15,6 +15,10 @@ export class ProductService {
     return this.http.get<Product>(`${this.productUrl}/${id}`);
   }
 
+  addProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(`${this.productUrl}`, product);
+  }
+
   updateProduct(product: Product, id: string): Observable<Product> {
     return this.http.patch<Product>(`${this.productUrl}/${id}`, product);
   }
