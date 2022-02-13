@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { AuthResponseData, RawUser } from '../user';
 import { Subscription } from 'rxjs';
+import { SubscriptionsContainer } from '../subscriptions-container';
 
 @Component({
   selector: 'app-auth',
@@ -11,14 +12,14 @@ import { Subscription } from 'rxjs';
 })
 export class AuthComponent implements OnInit, OnDestroy {
   public isLoginMode = true;
-  private subscriptions: Array<Subscription> = [];
+  public subscriptions = new SubscriptionsContainer();
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.dispose();
   }
 
   public onSwitchMode(): void {
@@ -50,14 +51,11 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   private signUpUser(newUser: RawUser) {
-    this.authService
-      .signup(newUser)
-      .subscribe((responseData: AuthResponseData) => console.log(responseData));
+    this.subscriptions.add = this.authService.signup(newUser).subscribe();
   }
 
   private logInUser(user: RawUser) {
-    const loginSubscription = this.authService.login(user).subscribe();
-    this.subscriptions.push(loginSubscription);
+    this.subscriptions.add = this.authService.login(user).subscribe();
   }
 
   public getPasswordRegex(): string {

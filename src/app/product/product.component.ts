@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../services/product.service';
+import { SubscriptionsContainer } from '../subscriptions-container';
 
 @Component({
   selector: 'app-product',
@@ -15,7 +16,7 @@ export class ProductComponent implements OnInit {
   product!: any;
   productForm!: FormGroup;
   paramsId!: string;
-  private subscriptions: Array<Subscription> = [];
+  private subscriptions = new SubscriptionsContainer();
   public isProductAddComponent = false;
 
   constructor(
@@ -31,7 +32,7 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.dispose();
   }
 
   private initComponent(paramsId: string): void {
@@ -41,14 +42,12 @@ export class ProductComponent implements OnInit {
   }
 
   getProduct(id: string): void {
-    const getProductSub = this.productService
+    this.subscriptions.add = this.productService
       .getProduct(id)
       .subscribe((product) => {
         this.product = product;
         this.initializeForm();
       });
-
-    this.subscriptions.push(getProductSub);
   }
 
   initializeForm(): void {
@@ -82,11 +81,9 @@ export class ProductComponent implements OnInit {
   }
 
   public deleteProduct(): void {
-    const productDeletingSub = this.productService
+    this.subscriptions.add = this.productService
       .deleteProduct(this.product._id)
       .subscribe(() => this.goBack());
-
-    this.subscriptions.push(productDeletingSub);
   }
 
   private goBack(): void {
@@ -103,11 +100,9 @@ export class ProductComponent implements OnInit {
   }
 
   private updateProduct(product: any): void {
-    const productUpdatingSub = this.productService
+    this.subscriptions.add = this.productService
       .updateProduct(product, this.paramsId)
       .subscribe(() => this.goBack());
-
-    this.subscriptions.push(productUpdatingSub);
   }
 
   private addProduct(product: any): void {}

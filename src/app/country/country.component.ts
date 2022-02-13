@@ -5,6 +5,7 @@ import { ResponseCountry } from '../country';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { SubscriptionsContainer } from '../subscriptions-container';
 
 @Component({
   selector: 'app-country',
@@ -14,7 +15,7 @@ import { Location } from '@angular/common';
 export class CountryComponent implements OnInit {
   country!: ResponseCountry;
   private inputCountry = new Subject<string>();
-  private subscriptions: Array<Subscription> = [];
+  private subscriptions = new SubscriptionsContainer();
 
   constructor(
     private countryService: CountryService,
@@ -29,17 +30,15 @@ export class CountryComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.dispose();
   }
 
   getCountry(id: string): void {
-    const getCountrySub = this.countryService
+    this.subscriptions.add = this.countryService
       .getCountryById(id)
       .subscribe((country) => {
         this.country = country;
       });
-
-    this.subscriptions.push(getCountrySub);
   }
 
   editCountry(name: string): void {
@@ -51,7 +50,7 @@ export class CountryComponent implements OnInit {
   }
 
   setCountryNameEdit(countryId: string): void {
-    const countryUpdatingSub = this.inputCountry
+    this.subscriptions.add = this.inputCountry
       .pipe(
         debounceTime(1000),
         distinctUntilChanged(),
@@ -60,16 +59,12 @@ export class CountryComponent implements OnInit {
         )
       )
       .subscribe();
-
-    this.subscriptions.push(countryUpdatingSub);
   }
 
   public deleteCountry(): void {
-    const countryDeletingSub = this.countryService
+    this.subscriptions.add = this.countryService
       .deleteCountry(this.country._id)
       .subscribe(() => this.goBack());
-
-    this.subscriptions.push(countryDeletingSub);
   }
 
   private goBack(): void {
