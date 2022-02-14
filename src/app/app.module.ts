@@ -10,6 +10,7 @@ import { CountryComponent } from './country/country.component';
 import { ProductComponent } from './product/product.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
     CountryComponent,
     ProductComponent,
     AuthComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

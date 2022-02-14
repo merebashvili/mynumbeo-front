@@ -1,0 +1,14 @@
+header {
+  display: flex;
+  justify-content: space-between;
+
+  img {
+    width: 200px;
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
