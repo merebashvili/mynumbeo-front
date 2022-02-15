@@ -3,6 +3,8 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../user.model';
 import { SubscriptionsContainer } from '../subscriptions-container';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
