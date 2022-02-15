@@ -5,7 +5,7 @@
   <div *ngIf="!(isAuthenticated$ | async)" routerLink="/auth" class="tab">
     login
   </div>
-  <div *ngIf="isAuthenticated$ | async" routerLink="/auth" class="tab">
+  <div *ngIf="isAuthenticated$ | async" (click)="logout()" class="tab">
     logout
   </div>
 </header>

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthResponseData, RawUser } from '../user';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../user.model';
-import { tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private signUpUrl = '/users';
   private loginUrl = '/users/login';
+  private logoutUrl = '/users/logout';
   public user = new BehaviorSubject<User | null>(null);
   public isAuthenticated = new BehaviorSubject<boolean>(false);
 
@@ -29,6 +30,20 @@ export class AuthService {
     return this.http.post<AuthResponseData>(this.loginUrl, user).pipe(
       tap((resData) => {
         this.handleAuthentication(resData);
+      })
+    );
+  }
+
+  logout(): Observable<User> {
+    return this.user.pipe(
+      take(1),
+      switchMap((user) => {
+        return this.http.post<User>(this.logoutUrl, user).pipe(
+          tap(() => {
+            this.user.next(null);
+            localStorage.removeItem('userData');
+          })
+        );
       })
     );
   }
@@ -70,6 +85,8 @@ export class AuthService {
   }
 
   private setAuthStatus(): void {
-    this.user.subscribe((user) => this.isAuthenticated.next(!!user));
+    this.user.subscribe((user) => {
+      this.isAuthenticated.next(!!user);
+    });
   }
 }
