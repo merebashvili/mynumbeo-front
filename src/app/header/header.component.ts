@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public isAuthenticated$ = this.authService.isAuthenticated;
+  public isAuthenticated$ = this.authService.isAuthenticated$;
   public subscriptions = new SubscriptionsContainer();
   constructor(private authService: AuthService, private router: Router) {}
 

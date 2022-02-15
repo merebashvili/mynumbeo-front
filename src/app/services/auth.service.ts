@@ -14,7 +14,7 @@ export class AuthService {
   private loginUrl = '/users/login';
   private logoutUrl = '/users/logout';
   public user = new BehaviorSubject<User | null>(null);
-  public isAuthenticated = this.user.pipe(map((user) => !!user));
+  public isAuthenticated$ = this.user.pipe(map((user) => !!user));
 
   constructor(private http: HttpClient, private router: Router) {}
 
