@@ -13,6 +13,7 @@ export class AuthService {
   private signUpUrl = '/users';
   private loginUrl = '/users/login';
   public user = new BehaviorSubject<User | null>(null);
+  public isAuthenticated = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -50,6 +51,7 @@ export class AuthService {
 
     if (newUser.token) {
       this.user.next(newUser);
+      this.setAuthStatus();
     }
   }
 
@@ -63,6 +65,11 @@ export class AuthService {
     );
     this.user.next(user);
     localStorage.setItem('userData', JSON.stringify(user));
+    this.setAuthStatus();
     this.router.navigate(['/countries-list']);
+  }
+
+  private setAuthStatus(): void {
+    this.user.subscribe((user) => this.isAuthenticated.next(!!user));
   }
 }
