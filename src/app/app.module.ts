@@ -11,6 +11,7 @@ import { ProductComponent } from './product/product.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { HeaderComponent } from './header/header.component';
+import { PasswordRegexDirective } from './directives/password-regex.directive';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HeaderComponent } from './header/header.component';
     ProductComponent,
     AuthComponent,
     HeaderComponent,
+    PasswordRegexDirective,
   ],
   imports: [
     BrowserModule,
